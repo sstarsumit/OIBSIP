@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Complete Healthcare Solutions</title>
+    <style>
+        /* === Basic Reset & Variables === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        :root {
+            --primary: #00BFA5;
+            --secondary: #FF5252;
+            --dark: #333;
+            --light: #f9f9f9;
+        }
+        body {
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* === Header === */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo img {
+            height: 30px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .cta-button:hover {
+            background-color: #00897B;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,191,165,0.3);
+        }
+
+        /* === Hero Section === */
+        .hero {
+            background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), 
+                        url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* === Features Section === */
+        .features {
+            padding: 80px 0;
+            background-color: white;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            object-fit: contain;
+        }
+
+        /* === Products Section === */
+        .products {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 10px;
+        }
+        .tab-btn {
+            padding: 10px 25px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-img {
+            height: 200px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-img img {
+            max-height: 80%;
+            max-width: 80%;
+        }
+        .product-info {
+            padding: 20px;
+        }
+        .product-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .product-price {
+            color: var(--primary);
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* === Symptoms Section === */
+        .symptoms {
+            padding: 80px 0;
+            background-color: white;
+        }
+        .symptom-box {
+            background: var(--light);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .symptom-icon {
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+        .symptom-content h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        .medicines-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .medicine-tag {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        /* === Footer === */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .footer-links h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .footer-links ul {
+            list-style: none;
+        }
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+        }
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+
+        /* === Responsive Design === */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .category-tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3029/3029021.png" alt="MediCare Logo">
+                    MediCare
+                </div>
+                <div class="nav-links">
+                    <a href="#features">Services</a>
+                    <a href="#products">Products</a>
+                    <a href="#symptoms">Symptoms</a>
+                    <a href="#" class="cta-button">Login</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Your Complete Healthcare Solution</h1>
+            <p>Get medicines, cosmetics, and doctor consultations all in one place. Fast delivery and genuine products guaranteed.</p>
+            <a href="#products" class="cta-button">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose MediCare</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3022/3022561.png" class="feature-icon" alt="Genuine Products">
+                    <h3>100% Genuine</h3>
+                    <p>All products sourced directly from manufacturers with proper certification</p>
+                </div>
+                <div class="feature-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2853/2853308.png" class="feature-icon" alt="Fast Delivery">
+                    <h3>90-Minute Delivery</h3>
+                    <p>Emergency medicines delivered faster than pizza in metro cities</p>
+                </div>
+                <div class="feature-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3023/3023963.png" class="feature-icon" alt="Doctor Support">
+                    <h3>24/7 Doctor Support</h3>
+                    <p>Free consultations with qualified physicians for all customers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <h2 class="section-title">Our Products</h2>
+            <div class="category-tabs">
+                <button class="tab-btn active" onclick="filterProducts('all')">All Items</button>
+                <button class="tab-btn" onclick="filterProducts('medicine')">Medicines</button>
+                <button class="tab-btn" onclick="filterProducts('cosmetic')">Cosmetics</button>
+                <button class="tab-btn" onclick="filterProducts('wellness')">Wellness</button>
+            </div>
+            <div class="products-grid">
+                <!-- Medicine 1 -->
+                <div class="product-card" data-category="medicine">
+                    <div class="product-img">
+                        <img src="https://5.imimg.com/data5/SELLER/Default/2021/12/QT/VO/KY/3033203/dolo-650-tablet-500x500.jpg" alt="Dolo 650">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Dolo 650 Tablet</h3>
+                        <p>Fever & pain relief</p>
+                        <div class="product-price">₹30</div>
+                    </div>
+                </div>
+                <!-- Medicine 2 -->
+                <div class="product-card" data-category="medicine">
+                    <div class="product-img">
+                        <img src="https://onemg.gumlet.io/images/c_fit,q_auto,w_150,f_auto,h_150/ikj4jttswksvzrdmzq0n/digene-tablet.jpg" alt="Digene">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Digene Tablet</h3>
+                        <p>Acidity & indigestion</p>
+                        <div class="product-price">₹45</div>
+                    </div>
+                </div>
+                <!-- Cosmetic 1 -->
+                <div class="product-card" data-category="cosmetic">
+                    <div class="product-img">
+                        <img src="https://www.beautybebo.com/pub/media/catalog/product/cache/37253e89591b79b38c00254331932999/h/i/himalaya-whitening-toothpaste-150ml_1.jpg" alt="Himalaya Toothpaste">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Himalaya Toothpaste</h3>
+                        <p>Herbal whitening</p>
+                        <div class="product-price">₹85</div>
+                    </div>
+                </div>
+                <!-- Add more products... -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Symptoms Section -->
+    <section class="symptoms" id="symptoms">
+        <div class="container">
+            <h2 class="section-title">Symptom-Based Solutions</h2>
+            
+            <div class="symptom-box">
+                <div class="symptom-icon">🤒</div>
+                <div class="symptom-content">
+                    <h3>Fever & Body Ache</h3>
+                    <p>Common symptoms include high temperature, headache, muscle pain</p>
+                    <div class="medicines-list">
+                        <span class="medicine-tag">Paracetamol 650mg</span>
+                        <span class="medicine-tag">Dolo 650</span>
+                        <span class="medicine-tag">Combiflam</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="symptom-box">
+                <div class="symptom-icon">🤧</div>
+                <div class="symptom-content">
+                    <h3>Cold & Cough</h3>
+                    <p>Runny nose, sore throat, congestion</p>
+                    <div class="medicines-list">
+                        <span class="medicine-tag">Cetirizine</span>
+                        <span class="medicine-tag">Benadryl</span>
+                        <span class="medicine-tag">Vicks Action 500</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more symptoms... -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#features">Services</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#symptoms">Symptoms</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>24/7 Helpline: 1800-123-456</li>
+                        <li>Email: help@medicare.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 MediCare. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple product filtering
+        function filterProducts(category) {
+            const products = document.querySelectorAll('.product-card');
+            const buttons = document.querySelectorAll('.tab-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            products.forEach(product => {
+                if (category === 'all' || product.dataset.category === category) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+        
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

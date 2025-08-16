@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4a6bff;
+            --secondary: #ff6b6b;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: gradientBG 15s ease infinite;
+            background-size: 400% 400%;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+        
+        .converter {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 400;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .input-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.2);
+        }
+        
+        .input-group input.error {
+            border-color: var(--secondary);
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .error-message {
+            color: var(--secondary);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .unit-selection {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .unit-selection label {
+            margin-bottom: 8px;
+            display: block;
+            color: var(--dark);
+            font-weight: 400;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .radio-option {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .radio-option input {
+            display: none;
+        }
+        
+        .radio-option label {
+            display: block;
+            padding: 12px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .radio-option input:checked + label {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(74, 107, 255, 0.3);
+        }
+        
+        .convert-btn {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(74, 107, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .convert-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(74, 107, 255, 0.4);
+        }
+        
+        .convert-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .result.show {
+            display: block;
+        }
+        
+        .result-value {
+            font-size: 36px;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .result-unit {
+            font-size: 18px;
+            color: var(--dark);
+        }
+        
+        .weather-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .radio-option {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Temperature Converter</h1>
+        
+        <div class="converter">
+            <div class="input-group">
+                <label for="temperature">Enter Temperature</label>
+                <input type="text" id="temperature" placeholder="e.g. 32">
+                <div class="error-message" id="error-message">Please enter a valid number</div>
+            </div>
+            
+            <div class="unit-selection">
+                <label>Convert From</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="from-celsius" name="from-unit" value="celsius" checked>
+                        <label for="from-celsius">Celsius (°C)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="from-fahrenheit" name="from-unit" value="fahrenheit">
+                        <label for="from-fahrenheit">Fahrenheit (°F)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="from-kelvin" name="from-unit" value="kelvin">
+                        <label for="from-kelvin">Kelvin (K)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="unit-selection">
+                <label>Convert To</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="to-celsius" name="to-unit" value="celsius">
+                        <label for="to-celsius">Celsius (°C)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="to-fahrenheit" name="to-unit" value="fahrenheit" checked>
+                        <label for="to-fahrenheit">Fahrenheit (°F)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="to-kelvin" name="to-unit" value="kelvin">
+                        <label for="to-kelvin">Kelvin (K)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="convert-btn" id="convert-btn">Convert</button>
+            
+            <div class="result" id="result">
+                <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" alt="Temperature icon" class="weather-icon">
+                <div class="result-value" id="result-value">0</div>
+                <div class="result-unit" id="result-unit">°F</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Temperature Converter © 2023 | All units supported
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const temperatureInput = document.getElementById('temperature');
+            const convertBtn = document.getElementById('convert-btn');
+            const resultDiv = document.getElementById('result');
+            const resultValue = document.getElementById('result-value');
+            const resultUnit = document.getElementById('result-unit');
+            const errorMessage = document.getElementById('error-message');
+            
+            convertBtn.addEventListener('click', convertTemperature);
+            temperatureInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    convertTemperature();
+                }
+            });
+            
+            function convertTemperature() {
+                const tempValue = temperatureInput.value.trim();
+                
+                // Validate input
+                if (tempValue === '' || isNaN(tempValue)) {
+                    temperatureInput.classList.add('error');
+                    errorMessage.style.display = 'block';
+                    resultDiv.classList.remove('show');
+                    return;
+                } else {
+                    temperatureInput.classList.remove('error');
+                    errorMessage.style.display = 'none';
+                }
+                
+                const fromUnit = document.querySelector('input[name="from-unit"]:checked').value;
+                const toUnit = document.querySelector('input[name="to-unit"]:checked').value;
+                const temp = parseFloat(tempValue);
+                
+                let convertedTemp;
+                let unitSymbol;
+                
+                // Convert to Kelvin first
+                let kelvinTemp;
+                switch(fromUnit) {
+                    case 'celsius':
+                        kelvinTemp = temp + 273.15;
+                        break;
+                    case 'fahrenheit':
+                        kelvinTemp = (temp - 32) * 5/9 + 273.15;
+                        break;
+                    case 'kelvin':
+                        kelvinTemp = temp;
+                        break;
+                }
+                
+                // Convert from Kelvin to target unit
+                switch(toUnit) {
+                    case 'celsius':
+                        convertedTemp = kelvinTemp - 273.15;
+                        unitSymbol = '°C';
+                        break;
+                    case 'fahrenheit':
+                        convertedTemp = (kelvinTemp - 273.15) * 9/5 + 32;
+                        unitSymbol = '°F';
+                        break;
+                    case 'kelvin':
+                        convertedTemp = kelvinTemp;
+                        unitSymbol = 'K';
+                        break;
+                }
+                
+                // Round to 2 decimal places
+                convertedTemp = Math.round(convertedTemp * 100) / 100;
+                
+                // Update weather icon based on temperature
+                updateWeatherIcon(convertedTemp, toUnit);
+                
+                // Display result
+                resultValue.textContent = convertedTemp;
+                resultUnit.textContent = unitSymbol;
+                resultDiv.classList.add('show');
+            }
+            
+            function updateWeatherIcon(temp, unit) {
+                const icon = document.querySelector('.weather-icon');
+                let iconUrl;
+                
+                // Normalize temperature to Celsius for icon selection
+                let normalizedTemp;
+                if (unit === 'fahrenheit') {
+                    normalizedTemp = (temp - 32) * 5/9;
+                } else if (unit === 'kelvin') {
+                    normalizedTemp = temp - 273.15;
+                } else {
+                    normalizedTemp = temp;
+                }
+                
+                if (normalizedTemp <= 0) {
+                    iconUrl = 'https://cdn-icons-png.flaticon.com/512/2936/2936886.png'; // Snowflake
+                } else if (normalizedTemp <= 10) {
+                    iconUrl = 'https://cdn-icons-png.flaticon.com/512/615/615667.png'; // Cloud
+                } else if (normalizedTemp <= 25) {
+                    iconUrl = 'https://cdn-icons-png.flaticon.com/512/3222/3222807.png'; // Sun and cloud
+                } else {
+                    iconUrl = 'https://cdn-icons-png.flaticon.com/512/3222/3222675.png'; // Sun
+                }
+                
+                icon.src = iconUrl;
+            }
+        });
+    </script>
+</body>
+</html>
